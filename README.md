@@ -79,6 +79,15 @@ There are two options to run this. Either the service can be run as a go command
 
 ### Docker
 **General**
+
+Master is always available on Docker Hub:
+```
+docker run -it -p 8080:8080 ruflin/integrations-registry
+```
+If you already have the image locally and need a newer version, make sure to pull it again or delete it.
+
+
+If you want to build your own version or from a branch, use:
 ```
 docker build .
 docker run -p 8080:8080 {image id from prior step}
