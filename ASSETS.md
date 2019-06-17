@@ -45,6 +45,10 @@ some variables to reference. An example on this can be found [here](https://gith
  in Beats. It means the integrations manager will have to be able to understand this template language (we still need 
  to decide what our template language is) and replace the pipeline ids with the correct values.
  
+ Today in Beats to handle this case the pipeline is prefixed by the dataset, Beat version and then the name of the pipeline file
+ which gives a unique name that can also be referenced in the other pipelines. The order in which the pipelines are loaded does not 
+ matter. A pipeline with a reference to an other pipeline can be loaded into Elasticsearch before it exists there.
+ 
  ### Index Template
 
 * Asset Path: `elasticsearch/index-template/*.json`
