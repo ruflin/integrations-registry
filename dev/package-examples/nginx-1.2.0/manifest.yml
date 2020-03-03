@@ -7,11 +7,9 @@ version: 1.2.0
 categories: ["logs", "metrics"]
 release: ga
 
-requirement:
-  kibana:
-    versions: ">7.1.0 <7.6.0"
-  elasticsearch:
-    versions: ">7.0.1"
+requirements:
+  - "validate_version(${kibana.version}, '>7.1.0 <7.6.0')"
+  - "validate_version(${elasticsearch.version}, '>7.0.1')"
 
 datasources:
   -
