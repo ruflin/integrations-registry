@@ -6,10 +6,6 @@
             "searchSourceJSON": {
                 "filter": [],
                 "highlightAll": true,
-                "query": {
-                    "language": "kuery",
-                    "query": "host.name:\"CHANGEME_HOSTNAME\""
-                },
                 "version": true
             }
         },
