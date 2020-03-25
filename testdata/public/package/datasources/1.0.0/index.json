@@ -14,6 +14,7 @@
     "kibana": {}
   },
   "assets": [
+<<<<<<< HEAD:testdata/public/package/datasources-1.0.0/index.json
     "/package/datasources-1.0.0/manifest.yml",
     "/package/datasources-1.0.0/docs/README.md",
     "/package/datasources-1.0.0/dataset/examplelog1/manifest.yml",
@@ -22,6 +23,13 @@
     "/package/datasources-1.0.0/dataset/examplelog1/fields/stream.yml",
     "/package/datasources-1.0.0/dataset/examplelog2/fields/stream.yml",
     "/package/datasources-1.0.0/dataset/examplemetric/fields/stream.yml"
+=======
+    "/package/datasources/1.0.0/manifest.yml",
+    "/package/datasources/1.0.0/docs/README.md",
+    "/package/datasources/1.0.0/dataset/examplelog1/manifest.yml",
+    "/package/datasources/1.0.0/dataset/examplelog2/manifest.yml",
+    "/package/datasources/1.0.0/dataset/examplemetric/manifest.yml"
+>>>>>>> 4b690b6... Change package path from {packagename}-{version} to {packagename}/{version}:testdata/public/package/datasources/1.0.0/index.json
   ],
   "datasets": [
     {
@@ -253,5 +261,5 @@
     }
   ],
   "download": "/epr/datasources/datasources-1.0.0.tar.gz",
-  "path": "/package/datasources-1.0.0"
+  "path": "/package/datasources/1.0.0"
 }
