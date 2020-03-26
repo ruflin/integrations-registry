@@ -3,7 +3,7 @@
 @Library('apm@current') _
 
 pipeline {
-  agent { label 'docker && linux && immutable' }
+  agent { label 'ubuntu && immutable' }
   environment {
     BASE_DIR="src/github.com/elastic/package-registry"
     JOB_GIT_CREDENTIALS = "f6c7695a-671e-4f4f-a331-acdce44ff9ba"
