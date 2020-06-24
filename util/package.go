@@ -222,25 +222,17 @@ func NewPackage(basePath string) (*Package, error) {
 	p.Download = p.GetDownloadPath()
 	p.Path = p.GetUrlPath()
 
+	err = p.LoadAssets()
+	if err != nil {
+		return nil, errors.Wrapf(err, "loading package assets failed (path '%s')", p.GetPath())
+	}
+
+	err = p.LoadDataSets()
+	if err != nil {
+		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", p.GetPath())
+	}
+
 	return p, nil
-}
-
-func NewPackageWithResources(path string) (*Package, error) {
-	aPackage, err := NewPackage(path)
-	if err != nil {
-		return nil, errors.Wrapf(err, "building package from path '%s' failed", path)
-	}
-
-	err = aPackage.LoadAssets(aPackage.GetPath())
-	if err != nil {
-		return nil, errors.Wrapf(err, "loading package assets failed (path '%s')", path)
-	}
-
-	err = aPackage.LoadDataSets()
-	if err != nil {
-		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", path)
-	}
-	return aPackage, nil
 }
 
 func (p *Package) HasCategory(category string) bool {
@@ -274,7 +266,7 @@ func (p *Package) IsNewerOrEqual(pp Package) bool {
 
 // LoadAssets (re)loads all the assets of the package
 // Based on the time when this is called, it might be that not all assets for a package exist yet, so it is reset every time.
-func (p *Package) LoadAssets(packagePath string) (err error) {
+func (p *Package) LoadAssets() (err error) {
 	// Reset Assets
 	p.Assets = nil
 
@@ -304,7 +296,7 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		// Strip away the basePath from the local system
 		a = a[len(p.BasePath)+1:]
 
-		a = path.Join("/package", packagePath, a)
+		a = path.Join("/package", p.GetPath(), a)
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
