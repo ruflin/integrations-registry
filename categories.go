@@ -59,12 +59,12 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 
 			// Check if the version exists and if it should be added or not.
 			// If the package in the list is newer or equal, do nothing.
-			if pp, ok := packageList[p.Name]; ok && pp.IsNewerOrEqual(p) {
+			if pp, ok := packageList[p.Name]; ok && pp.IsNewerOrEqual(*p) {
 				continue
 			}
 
 			// Otherwise delete and later add the new one.
-			packageList[p.Name] = p
+			packageList[p.Name] = *p
 		}
 
 		categories := map[string]*Category{}

@@ -123,7 +123,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 						if pp.Name == p.Name {
 
 							// If the package in the list is newer or equal, do nothing.
-							if pp.IsNewerOrEqual(p) {
+							if pp.IsNewerOrEqual(*p) {
 								continue
 							}
 
@@ -137,7 +137,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			if _, ok := packagesList[p.Name]; !ok {
 				packagesList[p.Name] = map[string]util.Package{}
 			}
-			packagesList[p.Name][p.Version] = p
+			packagesList[p.Name][p.Version] = *p
 		}
 
 		data, err := getPackageOutput(packagesList)

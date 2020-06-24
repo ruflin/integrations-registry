@@ -60,7 +60,7 @@ func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) fu
 		w.Header().Set("Content-Type", "application/json")
 		cacheHeaders(w, cacheTime)
 
-		p, err := util.NewPackage(packagePath)
+		p, err := util.GetPackage(packagePath)
 		if err != nil {
 			log.Printf("loading package from path '%s' failed: %v", packagePath, err)
 
