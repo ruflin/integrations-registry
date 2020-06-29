@@ -64,7 +64,7 @@ func (p *Packages) getPackageFromCache(path string) (*Package, error) {
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
 func GetPackages(packagesBasePaths []string) (*Packages, error) {
-	if packageList != nil {
+	if packageList != nil && len(packageList.List) > 0 {
 		return packageList, nil
 	}
 
