@@ -224,7 +224,7 @@ func NewPackage(basePath string) (*Package, error) {
 }
 
 func NewPackageWithResources(path string) (*Package, error) {
-	p, err := NewPackage(path)
+	p, err := GetPackage(path)
 	if err != nil {
 		return nil, errors.Wrapf(err, "building package from path '%s' failed", path)
 	}
@@ -266,7 +266,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return true
 }
 
-func (p *Package) IsNewerOrEqual(pp Package) bool {
+func (p *Package) IsNewerOrEqual(pp *Package) bool {
 	return !p.versionSemVer.LessThan(pp.versionSemVer)
 }
 
@@ -394,7 +394,7 @@ func (p *Package) validateVersionConsistency() error {
 	return nil
 }
 
-// GetDatasetPaths returns a list with the dataset paths inside this package
+// GetDatasetPaths returns a List with the dataset paths inside this package
 func (p *Package) GetDatasetPaths() ([]string, error) {
 	datasetBasePath := filepath.Join(p.BasePath, "dataset")
 

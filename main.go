@@ -156,11 +156,11 @@ func ensurePackagesAvailable(packagesBasePaths []string) {
 		log.Fatal(err)
 	}
 
-	if len(packages) == 0 {
+	if len(packages.List) == 0 {
 		log.Fatal("No packages available")
 	}
 
-	log.Printf("%v package manifests loaded.\n", len(packages))
+	log.Printf("%v package manifests loaded.\n", len(packages.List))
 }
 
 func mustLoadRouter(config *Config, packagesBasePaths []string) *mux.Router {

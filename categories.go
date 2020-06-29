@@ -43,9 +43,9 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 			}
 		}
 
-		packageList := map[string]util.Package{}
+		packageList := map[string]*util.Package{}
 		// Get unique list of newest packages
-		for _, p := range packages {
+		for _, p := range packages.List {
 
 			// Skip internal packages
 			if p.Internal {

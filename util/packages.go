@@ -9,19 +9,61 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/pkg/errors"
 )
 
-var packageList Packages
+var packageList = &Packages{}
 
-type Packages []Package
+type Packages struct {
+	sync.RWMutex
+	List map[string]*Package
+}
+
+func GetPackage(path string) (*Package, error) {
+	p, err := packageList.getPackageFromCache(path)
+	if err != nil {
+		return nil, err
+	}
+	if p != nil {
+		return p, nil
+	}
+
+	newPackage, err := NewPackage(path)
+	if err != nil {
+		return nil, err
+	}
+
+	packageList.addPackage(newPackage)
+
+	return newPackage, nil
+}
+
+func (p *Packages) addPackage(p2 *Package) {
+	p.Lock()
+	defer p.Unlock()
+	if p.List == nil {
+		p.List = map[string]*Package{}
+	}
+	p.List[p2.GetPath()] = p2
+}
+
+func (p *Packages) getPackageFromCache(path string) (*Package, error) {
+	p.RLock()
+	defer p.RUnlock()
+	// If cache exists, return it
+	if _, ok := p.List[path]; ok {
+		return p.List[path], nil
+	}
+	return nil, nil
+}
 
 // GetPackages returns a slice with all existing packages.
-// The list is stored in memory and on the second request directly served from memory.
+// The List is stored in memory and on the second request directly served from memory.
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
-func GetPackages(packagesBasePaths []string) (Packages, error) {
+func GetPackages(packagesBasePaths []string) (*Packages, error) {
 	if packageList != nil {
 		return packageList, nil
 	}
@@ -34,25 +76,25 @@ func GetPackages(packagesBasePaths []string) (Packages, error) {
 	return packageList, nil
 }
 
-func getPackagesFromFilesystem(packagesBasePaths []string) (Packages, error) {
+func getPackagesFromFilesystem(packagesBasePaths []string) (*Packages, error) {
 	packagePaths, err := getPackagePaths(packagesBasePaths)
 	if err != nil {
 		return nil, err
 	}
 
-	var pList Packages
+	var pList = &Packages{}
 	for _, path := range packagePaths {
-		p, err := NewPackage(path)
+		p, err := GetPackage(path)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 		}
 
-		pList = append(pList, *p)
+		pList.addPackage(p)
 	}
 	return pList, nil
 }
 
-// getPackagePaths returns list of available packages, one for each version.
+// getPackagePaths returns List of available packages, one for each version.
 func getPackagePaths(allPaths []string) ([]string, error) {
 	var foundPaths []string
 	for _, packagesPath := range allPaths {

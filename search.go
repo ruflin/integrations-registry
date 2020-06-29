@@ -83,10 +83,10 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
 		}
-		packagesList := map[string]map[string]util.Package{}
+		packagesList := map[string]map[string]*util.Package{}
 
 		// Checks that only the most recent version of an integration is added to the list
-		for _, p := range packages {
+		for _, p := range packages.List {
 
 			// Skip internal packages by default
 			if p.Internal && !internal {
@@ -135,7 +135,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			}
 
 			if _, ok := packagesList[p.Name]; !ok {
-				packagesList[p.Name] = map[string]util.Package{}
+				packagesList[p.Name] = map[string]*util.Package{}
 			}
 			packagesList[p.Name][p.Version] = p
 		}
@@ -152,7 +152,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 	}
 }
 
-func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, error) {
+func getPackageOutput(packagesList map[string]map[string]*util.Package) ([]byte, error) {
 
 	separator := "@"
 	// Packages need to be sorted to be always outputted in the same order

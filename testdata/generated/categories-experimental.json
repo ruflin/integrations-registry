@@ -1,17 +1,1 @@
-[
-  {
-    "id": "logs",
-    "title": "Logs",
-    "count": 10
-  },
-  {
-    "id": "message_queue",
-    "title": "Message Queue",
-    "count": 1
-  },
-  {
-    "id": "metrics",
-    "title": "Metrics",
-    "count": 7
-  }
-]
+null
